@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="10dp">
+
+    <TextView
+        android:id="@+id/txtNome"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/colorPrimary"
+        android:text="NUM SEI QUE LÁ"/>
+
+    <TextView
+        android:id="@+id/txtFormacao"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/txtNome"
+        android:textColor="@color/colorPrimary"
+        android:text="FDP"/>
+
+    <TextView
+        android:id="@+id/txtVinculo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/txtFormacao"
+        android:textColor="@color/colorPrimary"
+        android:text="PQP"/>
+</RelativeLayout>

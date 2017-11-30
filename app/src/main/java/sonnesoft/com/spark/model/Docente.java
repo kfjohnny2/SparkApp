@@ -1,10 +1,12 @@
 package sonnesoft.com.spark.model;
 
+import java.io.Serializable;
+
 /**
  * Created by johnnylee on 30/11/17.
  */
 
-public class Docente {
+public class Docente implements Serializable{
     private int idServidor;
     private String siape;
     private String nome;
