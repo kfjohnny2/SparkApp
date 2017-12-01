@@ -1,10 +1,13 @@
 package sonnesoft.com.spark;
 
+import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
+import android.view.View;
 import android.widget.AbsListView;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import java.util.List;
@@ -14,7 +17,6 @@ import sonnesoft.com.spark.model.Docente;
 import sonnesoft.com.spark.service.ServiceDocentes;
 
 public class MainActivity extends AppCompatActivity {
-    private String hits;
     private DocenteAdapter docenteAdapter;
     private ListView listDocentes;
     private boolean flag_loading;
@@ -30,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void setup() {
         listDocentes = findViewById(R.id.listDocentes);
+        listDocentes.setOnItemClickListener(itemClickListener);
         listDocentes.setOnScrollListener(new AbsListView.OnScrollListener() {
 
             public void onScrollStateChanged(AbsListView view, int scrollState) {
@@ -55,7 +58,29 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    private AdapterView.OnItemClickListener itemClickListener = new AdapterView.OnItemClickListener() {
+        @Override
+        public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+            Docente d = (Docente) docenteAdapter.getItem(i);
+            Intent intent = new Intent(MainActivity.this, DocenteDetalhadoActivity.class);
+            intent.putExtra(getApplicationContext().getString(R.string.EXTRA_NOME), d.getNome());
+            intent.putExtra(getApplicationContext().getString(R.string.EXTRA_CATEGORIA), d.getCategoria());
+            intent.putExtra(getApplicationContext().getString(R.string.EXTRA_LOCACAO), d.getLotacao());
+            intent.putExtra(getApplicationContext().getString(R.string.EXTRA_SIAPE), d.getSiape());
+            startActivity(intent);
+
+        }
+    };
+
     private class DocentesAsyncTask extends AsyncTask<Void, Void, List<Docente>> {
+        private ProgressDialog pDialog;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            pDialog = ProgressDialog.show(MainActivity.this, "SPARK", "Fetching data...");
+
+        }
 
         @Override
         protected List<Docente> doInBackground(Void... voids) {
@@ -73,7 +98,7 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
 
-
+            pDialog.dismiss();
         }
     }
 }

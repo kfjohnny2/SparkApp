@@ -25,7 +25,8 @@ public class DocenteAdapter extends BaseAdapter {
     private static final int LOAD_MORE = 10;
     public DocenteAdapter(List<Docente> docentes, Context context) {
         this.docentesTotal =docentes;
-        this.docentes = docentes.subList(0, LOAD_MORE);
+        List<Docente> subList = docentes.subList(0, LOAD_MORE);
+        this.docentes = new ArrayList<>(subList);
         this.context = context;
     }
 
@@ -34,6 +35,7 @@ public class DocenteAdapter extends BaseAdapter {
         List<Docente> copyOfSubList = new ArrayList<>(subList);
         docentes.addAll(copyOfSubList);
     }
+
     @Override
     public int getCount() {
         return docentes.size();
@@ -54,7 +56,7 @@ public class DocenteAdapter extends BaseAdapter {
         mInflator = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         view = mInflator.inflate(R.layout.item_list_docente, null);
         TextView txtNome = view.findViewById(R.id.txtNome);
-        TextView txtFormacao = (TextView) view.findViewById(R.id.txtFormacao);
+        TextView txtFormacao = view.findViewById(R.id.txtFormacao);
         TextView txtVinculo = view.findViewById(R.id.txtVinculo);
         Docente d = docentes.get(i);
         if(d != null){

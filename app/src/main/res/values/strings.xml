@@ -2,5 +2,10 @@
 
     <string name="app_name">Spark</string>
     <!--<string name="url_base">http://api.spark.dev/</string>-->
-    <string name="url_base">http://192.168.1.4:3000/</string>
+    <string name="url_base">http://10.3.126.86:3000/</string>
+    <string name="consultar_siape"><u>CONSULTAR SIAPE</u></string>
+    <string name="EXTRA_NOME">EXTRA_NOME</string>
+    <string name="EXTRA_CATEGORIA">EXTRA_CATEGORIA</string>
+    <string name="EXTRA_LOCACAO">EXTRA_LOTACAO</string>
+    <string name="EXTRA_SIAPE">EXTRA_SIAPE</string>
 </resources>
