@@ -4,6 +4,7 @@ import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.AbsListView;
 import android.widget.ListView;
 
 import java.util.List;
@@ -16,6 +17,7 @@ public class MainActivity extends AppCompatActivity {
     private String hits;
     private DocenteAdapter docenteAdapter;
     private ListView listDocentes;
+    private boolean flag_loading;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,10 +27,35 @@ public class MainActivity extends AppCompatActivity {
         new DocentesAsyncTask().execute(null, null, null);
 
     }
-    private void setup(){
+
+    private void setup() {
         listDocentes = findViewById(R.id.listDocentes);
+        listDocentes.setOnScrollListener(new AbsListView.OnScrollListener() {
+
+            public void onScrollStateChanged(AbsListView view, int scrollState) {
+            }
+
+            public void onScroll(AbsListView view, int firstVisibleItem,
+                                 int visibleItemCount, int totalItemCount) {
+                if (firstVisibleItem + visibleItemCount == totalItemCount && totalItemCount != 0) {
+                    if (!flag_loading) {
+                        flag_loading = true;
+                        MainActivity.this.runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                docenteAdapter.addMore();
+
+                            }
+                        });
+                        flag_loading = false;
+                        docenteAdapter.notifyDataSetChanged();
+                    }
+                }
+            }
+        });
     }
-    private class DocentesAsyncTask extends AsyncTask<Void, Void, List<Docente>>{
+
+    private class DocentesAsyncTask extends AsyncTask<Void, Void, List<Docente>> {
 
         @Override
         protected List<Docente> doInBackground(Void... voids) {

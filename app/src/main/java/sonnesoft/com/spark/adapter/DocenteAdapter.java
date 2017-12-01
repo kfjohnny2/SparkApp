@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import sonnesoft.com.spark.R;
@@ -20,12 +21,19 @@ public class DocenteAdapter extends BaseAdapter {
     List<Docente> docentes;
     Context context;
     private LayoutInflater mInflator;
-
+    private List<Docente> docentesTotal;
+    private static final int LOAD_MORE = 10;
     public DocenteAdapter(List<Docente> docentes, Context context) {
-        this.docentes = docentes;
+        this.docentesTotal =docentes;
+        this.docentes = docentes.subList(0, LOAD_MORE);
         this.context = context;
     }
 
+    public void addMore(){
+        List<Docente> subList = docentesTotal.subList(docentes.size()-1, (docentes.size()-1)+LOAD_MORE);
+        List<Docente> copyOfSubList = new ArrayList<>(subList);
+        docentes.addAll(copyOfSubList);
+    }
     @Override
     public int getCount() {
         return docentes.size();
