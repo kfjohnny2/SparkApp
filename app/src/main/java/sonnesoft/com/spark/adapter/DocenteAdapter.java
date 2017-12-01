@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -23,6 +24,7 @@ public class DocenteAdapter extends BaseAdapter {
     private LayoutInflater mInflator;
     private List<Docente> docentesTotal;
     private static final int LOAD_MORE = 10;
+
     public DocenteAdapter(List<Docente> docentes, Context context) {
         this.docentesTotal =docentes;
         List<Docente> subList = docentes.subList(0, LOAD_MORE);
@@ -36,6 +38,20 @@ public class DocenteAdapter extends BaseAdapter {
         docentes.addAll(copyOfSubList);
     }
 
+    public void search(String criteria){
+        List<Docente> listSearch = new ArrayList<>();
+        if(!criteria.isEmpty()){
+            for (Docente d: docentesTotal) {
+                if(d.getNome().toLowerCase().contains(criteria.toLowerCase())){
+                    listSearch.add(d);
+                }
+            }
+        }else {
+            listSearch = docentesTotal.subList(0, LOAD_MORE);
+        }
+        docentes.clear();
+        docentes.addAll(listSearch);
+    }
     @Override
     public int getCount() {
         return docentes.size();

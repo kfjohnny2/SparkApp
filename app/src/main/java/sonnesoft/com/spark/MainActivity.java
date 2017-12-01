@@ -5,11 +5,16 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
+import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import sonnesoft.com.spark.adapter.DocenteAdapter;
@@ -20,6 +25,7 @@ public class MainActivity extends AppCompatActivity {
     private DocenteAdapter docenteAdapter;
     private ListView listDocentes;
     private boolean flag_loading;
+    private EditText edSearch;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +38,8 @@ public class MainActivity extends AppCompatActivity {
 
     private void setup() {
         listDocentes = findViewById(R.id.listDocentes);
+        edSearch = findViewById(R.id.edConsulta);
+        edSearch.setOnEditorActionListener(editorActionListener);
         listDocentes.setOnItemClickListener(itemClickListener);
         listDocentes.setOnScrollListener(new AbsListView.OnScrollListener() {
 
@@ -58,6 +66,17 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    private TextView.OnEditorActionListener editorActionListener = new TextView.OnEditorActionListener() {
+        @Override
+        public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
+            if(i == EditorInfo.IME_ACTION_DONE){
+                searchResult(textView.getText().toString());
+                return true;
+            }
+            return false;
+        }
+    };
+
     private AdapterView.OnItemClickListener itemClickListener = new AdapterView.OnItemClickListener() {
         @Override
         public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
@@ -72,6 +91,10 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
+    private void searchResult(String criteria){
+        docenteAdapter.search(criteria);
+        docenteAdapter.notifyDataSetChanged();
+    }
     private class DocentesAsyncTask extends AsyncTask<Void, Void, List<Docente>> {
         private ProgressDialog pDialog;
 
@@ -93,8 +116,10 @@ public class MainActivity extends AppCompatActivity {
             MainActivity.this.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    docenteAdapter = new DocenteAdapter(s, getApplicationContext());
-                    listDocentes.setAdapter(docenteAdapter);
+                    if(s != null){
+                        docenteAdapter = new DocenteAdapter(s, getApplicationContext());
+                        listDocentes.setAdapter(docenteAdapter);
+                    }
                 }
             });
 
